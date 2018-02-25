@@ -281,7 +281,7 @@ class Revision extends Eloquent
      */
     public function format($key, $value)
     {
-        $related_model = $this->revisionable_type;
+        $related_model = $this->getRelatedModelName();
         $related_model = new $related_model;
         $revisionFormattedFields = $related_model->getRevisionFormattedFields();
 
