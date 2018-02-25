@@ -387,4 +387,9 @@ class Revisionable extends Eloquent
             unset($donts);
         }
     }
+
+    public function scopeOfType($query, string $type)
+    {
+        $query->where('revisionable_type', $type);
+    }
 }

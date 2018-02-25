@@ -435,4 +435,9 @@ trait RevisionableTrait
             unset($donts);
         }
     }
+
+    public function disableRevisions()
+    {
+        $this->revisionEnabled = false;
+    }
 }
