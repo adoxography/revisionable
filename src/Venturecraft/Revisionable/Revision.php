@@ -4,6 +4,7 @@ namespace Venturecraft\Revisionable;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Log;
+use Relation;
 
 /**
  * Revision.
