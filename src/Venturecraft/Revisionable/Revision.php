@@ -296,4 +296,8 @@ class Revision extends Eloquent
     {
         return Relation::morphMap()[$this->revisionable_type] ?? $this->revisionable_type;
     }
+
+    public function scopeOfType($query, $type) {
+        return $query->where('revisionable_type', $type);
+    }
 }
