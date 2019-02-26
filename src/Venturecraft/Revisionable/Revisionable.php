@@ -1,6 +1,7 @@
 <?php namespace Venturecraft\Revisionable;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Arr;
 
 /*
  * This file is part of the Revisionable package by Venture Craft
@@ -107,11 +108,11 @@ class Revisionable extends Eloquent
             // the below is ugly, for sure, but it's required so we can save the standard model
             // then use the keep / dontkeep values for later, in the isRevisionable method
             $this->dontKeep = isset($this->dontKeepRevisionOf) ?
-                array_merge($this->dontKeepRevisionOf, $this->dontKeep)
+                Arr::merge($this->dontKeepRevisionOf, $this->dontKeep)
                 : $this->dontKeep;
 
             $this->doKeep = isset($this->keepRevisionOf) ?
-                array_merge($this->keepRevisionOf, $this->doKeep)
+                Arr::merge($this->keepRevisionOf, $this->doKeep)
                 : $this->doKeep;
 
             unset($this->attributes['dontKeepRevisionOf']);
@@ -144,7 +145,7 @@ class Revisionable extends Eloquent
                     'revisionable_type'     => $this->getMorphClass(),
                     'revisionable_id'       => $this->getKey(),
                     'key'                   => $key,
-                    'old_value'             => array_get($this->originalData, $key),
+                    'old_value'             => Arr::get($this->originalData, $key),
                     'new_value'             => $this->updatedData[$key],
                     'user_id'               => $this->getSystemUserId(),
                     'created_at'            => new \DateTime(),

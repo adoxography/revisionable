@@ -2,6 +2,8 @@
 
 namespace Venturecraft\Revisionable;
 
+use Illuminate\Support\Arr;
+
 /**
  * FieldFormatter.
  *
@@ -34,7 +36,7 @@ class FieldFormatter
             }
 
             if ($pkey == $key) {
-                $method = array_shift($parts);
+                $method = Arr::shift($parts);
 
                 if (method_exists(get_class(), $method)) {
                     return self::$method($value, implode(':', $parts));

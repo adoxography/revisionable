@@ -5,6 +5,7 @@ namespace Venturecraft\Revisionable;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 /**
  * Revision.
@@ -139,7 +140,7 @@ class Revision extends Eloquent
 
                     // Now we can find out the namespace of of related model
                     if (!method_exists($main_model, $related_model)) {
-                        $related_model = camel_case($related_model); // for cases like published_status_id
+                        $related_model = Str::camel($related_model); // for cases like published_status_id
                         if (!method_exists($main_model, $related_model)) {
                             throw new \Exception('Relation ' . $related_model . ' does not exist for ' . $main_model);
                         }
@@ -164,7 +165,7 @@ class Revision extends Eloquent
                     // Check if model use RevisionableTrait
                     if(method_exists($item, 'identifiableName')) {
                         // see if there's an available mutator
-                        $mutator = 'get' . studly_case($this->key) . 'Attribute';
+                        $mutator = 'get' . Str::studly($this->key) . 'Attribute';
                         if (method_exists($item, $mutator)) {
                             return $this->format($item->$mutator($this->key), $item->identifiableName());
                         }
@@ -181,7 +182,7 @@ class Revision extends Eloquent
             // if there was an issue
             // or, if it's a normal value
 
-            $mutator = 'get' . studly_case($this->key) . 'Attribute';
+            $mutator = 'get' . Str::studly($this->key) . 'Attribute';
             if (method_exists($main_model, $mutator)) {
                 return $this->format($this->key, $main_model->$mutator($this->$which_value));
             }
