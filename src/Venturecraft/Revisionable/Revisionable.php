@@ -65,7 +65,7 @@ class Revisionable extends Eloquent
             $model->postSave();
         });
 
-        static::created(function($model){
+        static::created(function ($model) {
             $model->postCreate();
         });
 
@@ -74,13 +74,22 @@ class Revisionable extends Eloquent
             $model->postDelete();
         });
     }
+    /**
+     * Instance the revision model
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function newModel()
+    {
+        $model = \Config::get('revisionable.model', 'Venturecraft\Revisionable\Revision');
+        return new $model;
+    }
 
     /**
      * @return mixed
      */
     public function revisionHistory()
     {
-        return $this->morphMany('\Venturecraft\Revisionable\Revision', 'revisionable');
+        return $this->morphMany(get_class(static::newModel()), 'revisionable');
     }
 
     /**
@@ -154,7 +163,7 @@ class Revisionable extends Eloquent
             }
 
             if (count($revisions) > 0) {
-                $revision = new Revision;
+                $revision = static::newModel();
                 \DB::table($revision->getTable())->insert($revisions);
             }
         }
@@ -187,9 +196,8 @@ class Revisionable extends Eloquent
                 'updated_at' => new \DateTime(),
             );
 
-            $revision = new Revision;
+            $revision = static::newModel();
             \DB::table($revision->getTable())->insert($revisions);
-
         }
     }
 
@@ -211,7 +219,7 @@ class Revisionable extends Eloquent
                 'created_at' => new \DateTime(),
                 'updated_at' => new \DateTime(),
             );
-            $revision = new \Venturecraft\Revisionable\Revision;
+            $revision = static::newModel();
             \DB::table($revision->getTable())->insert($revisions);
         }
     }
