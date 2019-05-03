@@ -36,7 +36,7 @@ class FieldFormatter
             }
 
             if ($pkey == $key) {
-                $method = Arr::shift($parts);
+                $method = array_shift($parts);
 
                 if (method_exists(get_class(), $method)) {
                     return self::$method($value, implode(':', $parts));
